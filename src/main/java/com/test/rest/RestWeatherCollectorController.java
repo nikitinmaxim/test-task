@@ -1,15 +1,10 @@
 package com.test.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.data.DataContainer;
 import com.test.model.DataPoint;
 import com.test.model.DataPointType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.test.exception.WeatherException;
 import com.test.model.AirportData;
 import com.test.service.CollectorService;
@@ -68,6 +63,16 @@ public class RestWeatherCollectorController {
                     return Response.status(404).build();
         }
         return Response.ok(airportData).build();
+    }
+
+    @PostMapping("/airport")
+    public Response addAirport(@RequestParam("iata") String iata, @RequestParam("latitude") Integer latitude, @RequestParam("longitude") Integer longitude) {
+        return Response.ok(DataContainer.addAirport(iata,latitude,longitude)).build();
+    }
+
+    @DeleteMapping("/airport/{iata}")
+    public Response deleteAirport(@PathVariable("iata") String iata) {
+        return Response.ok(DataContainer.delAirport(iata)).build();
     }
 
     @GetMapping("/exit")

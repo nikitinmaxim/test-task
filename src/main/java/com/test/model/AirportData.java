@@ -1,5 +1,7 @@
 package com.test.model;
 
+import java.util.Objects;
+
 /**
  * Basic airport information.
  *
@@ -28,5 +30,18 @@ public class AirportData implements Comparable<AirportData>{
     @Override
     public int compareTo(AirportData o) {
         return iata==null?-1:iata.compareTo(o.iata);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AirportData that = (AirportData) o;
+        return Objects.equals(iata, that.iata);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(iata);
     }
 }

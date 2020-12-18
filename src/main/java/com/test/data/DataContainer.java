@@ -54,6 +54,10 @@ public class DataContainer {
         return ad;
     }
 
+    public static boolean delAirport(String iata) {
+        return airportData.remove(new AirportData(iata, 0, 0, null));
+    }
+
     public static void UpdateReqeustFreqeuncy(AirportData airportData, Double radius) {
         requestFrequency.put(airportData, requestFrequency.getOrDefault(airportData, 0) + 1);
         radiusFreq.put(radius, radiusFreq.getOrDefault(radius, 0));

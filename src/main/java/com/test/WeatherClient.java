@@ -20,6 +20,10 @@ public class WeatherClient {
 
     private static final String BASE_URI = "http://localhost:8080";
 
+    //Здесь не понял почему WebTarget вынесены из локальных переменных
+    //Считаю что нужно вынести Client и вообще убрать WebTarget сделал в AirportLoader так как client.target создает
+    //новый объект
+
     /** end point for read queries */
     private WebTarget query;
 

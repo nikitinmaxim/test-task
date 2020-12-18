@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response;
  */
 @RestController
 @RequestMapping("/collect")
+//здесь и во втором контроллере я бы избавился от Response и возвращал бы только необходимую информацию
 public class RestWeatherCollectorController {
 
     @Inject

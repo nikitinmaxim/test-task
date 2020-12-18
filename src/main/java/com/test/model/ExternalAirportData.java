@@ -1,15 +1,17 @@
 package com.test.model;
 
 public class ExternalAirportData {
-    private String city;
-    private String country;
-    private String iata;
-    private String icao;
+    //здесь ссылочные типы можно сделать final чтобы их адреса не менялись, точно не помню, но помоему для того чтобы не
+    //напрягать сборщик мусора. хотя для них сеттеров нет можно было и ничего не делать
+    private final String city;
+    private final String country;
+    private final String iata;
+    private final String icao;
     private double latitude;
     private double longitude;
     private int altitude;
     private double tzOffset;
-    private DST dst;
+    private final DST dst;
 
     public ExternalAirportData(String city, String country, String iata, String icao, double latitude, double longitude,
                                int altitude, double tzOffset, DST dst) {

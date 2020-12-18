@@ -20,6 +20,8 @@ public class DataContainer {
      * we don't want to write this to disk, but will pull it off using a REST request and aggregate with other
      * performance metrics
      */
+    //здесь я основывался на том что нам действительно нужен TreeMap поэтому реализовал compareTo(AirportData o)
+    //в AirportData. Если бы нам хватило HashMap то это бы ускорило выполнение кода
     private final static Map<AirportData, Integer> requestFrequency = new TreeMap<>();
 
     private final static Map<Double, Integer> radiusFreq = new HashMap<>();

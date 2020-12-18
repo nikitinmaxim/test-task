@@ -24,7 +24,7 @@ public class QueryService {
      */
     public AirportData findAirportData(String iataCode) {
         return DataContainer.getAirportData().stream()
-                .filter(ap -> ap.iata == iataCode)
+                .filter(ap -> ap.iata.equals(iataCode))
                 .findFirst().orElse(null);
     }
 
@@ -76,7 +76,7 @@ public class QueryService {
                 best = aDouble;
             }
         }
-        int m = Integer.valueOf(seen ? best.intValue() : 1000) + 1;
+        int m = (seen ? best.intValue() : 1000) + 1;
 
         int[] h = new int[m];
         for (Map.Entry<Double, Integer> e : DataContainer.getRadiusFreq().entrySet()) {

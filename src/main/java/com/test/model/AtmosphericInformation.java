@@ -20,7 +20,7 @@ public class AtmosphericInformation {
 
     }
 
-    public void updateContents(DataPointType pointType, DataPoint dataPoint) throws WeatherException {
+    public void updateContents(DataPointType pointType, DataPoint dataPoint) {
         lastUpdateTime = System.currentTimeMillis();
         Contents.put(pointType, dataPoint);
     }

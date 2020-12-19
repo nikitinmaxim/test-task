@@ -21,8 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RestWeatherCollectorControllerTest extends BaseControllerTest {
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private DataContainer dataContainer;
@@ -96,11 +94,4 @@ public class RestWeatherCollectorControllerTest extends BaseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200));
     }
 
-    private ResultActions update(DataPoint data) throws Exception {
-        return mvc.perform(
-                MockMvcRequestBuilders.post("/collect/weather/BOS/" + data.getType().name() )
-                .content(objectMapper.writeValueAsString(data))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
-    }
 }

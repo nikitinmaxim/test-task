@@ -1,3 +1,4 @@
 City;Country;IATA/FAA;ICAO;Latitude;Longitude;Altitude;Timezone;DST
 city name; country name; BOSS; BOS4; 10.0; abc; 0; 5.5; E
 city name; country name; BOSS
+; country name; BOS; BOS4; 10.0; 0; 0; 5.5; E

@@ -35,6 +35,7 @@ public class DataContainer {
     protected void init() {
         airportData.clear();
         requestFrequency.clear();
+        radiusFreq.clear();
 
         addAirport("BOS", 42, -71);
         addAirport("EWR", 40, -74);

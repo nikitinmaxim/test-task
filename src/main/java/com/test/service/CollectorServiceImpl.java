@@ -28,7 +28,7 @@ public class CollectorServiceImpl implements CollectorService {
      */
     @Override
     public void addDataPoint(String iataCode, DataPointType pointType, DataPoint dp) throws WeatherException {
-        queryService.findAirportData(iataCode)
+        queryService.findAirport(iataCode)
                 .ifPresent(airportData -> airportData.getAtmosphericInformation().updateContents(pointType, dp));
     }
 

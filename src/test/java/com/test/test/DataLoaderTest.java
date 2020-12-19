@@ -1,6 +1,7 @@
 package com.test.test;
 
 import com.test.DataLoader;
+import com.test.model.ExternalAirportData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ public class DataLoaderTest {
         String name = this.getClass().getClassLoader().getResource("airports.dat").getFile();
 
         DataLoader loader = new DataLoader();
-        Function<DataLoader.Airport, Boolean> airportConsumer = (airport) -> true;
+        Function<ExternalAirportData, Boolean> airportConsumer = (airport) -> true;
         long count = loader.loadDataFile( name, airportConsumer);
 
         Assertions.assertEquals(count, 1);
@@ -24,7 +25,7 @@ public class DataLoaderTest {
         String name = this.getClass().getClassLoader().getResource("airports-comments.dat").getFile();
 
         DataLoader loader = new DataLoader();
-        Function<DataLoader.Airport, Boolean> airportConsumer = (airport) -> true;
+        Function<ExternalAirportData, Boolean> airportConsumer = (airport) -> true;
         long count = loader.loadDataFile( name, airportConsumer);
 
         Assertions.assertEquals(count, 0);
@@ -35,7 +36,7 @@ public class DataLoaderTest {
         String name = this.getClass().getClassLoader().getResource("airports-empty.dat").getFile();
 
         DataLoader loader = new DataLoader();
-        Function<DataLoader.Airport, Boolean> airportConsumer = (airport) -> true;
+        Function<ExternalAirportData, Boolean> airportConsumer = (airport) -> true;
         long count = loader.loadDataFile( name, airportConsumer);
 
         Assertions.assertEquals(count, 0);
@@ -46,7 +47,7 @@ public class DataLoaderTest {
         String name = this.getClass().getClassLoader().getResource("airports-without-header.dat").getFile();
 
         DataLoader loader = new DataLoader();
-        Function<DataLoader.Airport, Boolean> airportConsumer = (airport) -> true;
+        Function<ExternalAirportData, Boolean> airportConsumer = (airport) -> true;
         long count = loader.loadDataFile( name, airportConsumer);
 
         Assertions.assertEquals(count, 0);
@@ -57,7 +58,7 @@ public class DataLoaderTest {
         String name = this.getClass().getClassLoader().getResource("airports-wrong-data.dat").getFile();
 
         DataLoader loader = new DataLoader();
-        Function<DataLoader.Airport, Boolean> airportConsumer = (airport) -> true;
+        Function<ExternalAirportData, Boolean> airportConsumer = (airport) -> true;
         long count = loader.loadDataFile( name, airportConsumer);
 
         Assertions.assertEquals(count, 0);
@@ -68,7 +69,7 @@ public class DataLoaderTest {
         String name = "airports-wrong-data-absent.dat";
 
         DataLoader loader = new DataLoader();
-        Function<DataLoader.Airport, Boolean> airportConsumer = (airport) -> true;
+        Function<ExternalAirportData, Boolean> airportConsumer = (airport) -> true;
         long count = loader.loadDataFile( name, airportConsumer);
 
         Assertions.assertEquals(count, 0);

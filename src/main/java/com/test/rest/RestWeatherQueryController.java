@@ -46,7 +46,7 @@ public class RestWeatherQueryController {
     public Response weather(@PathVariable String iata, @PathVariable String radius) {
         double aradius = radius == null || radius.trim().isEmpty() ? 0 : Double.parseDouble(radius);
 
-        return queryService.findAirportData(iata)
+        return queryService.findAirport(iata)
                 .map(data -> Response.ok(queryService.queryWeather(iata, aradius)).build())
                 .orElseGet(() -> Response.status(404).build());
     }

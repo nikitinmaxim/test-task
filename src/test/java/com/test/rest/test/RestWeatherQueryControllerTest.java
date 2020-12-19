@@ -1,5 +1,7 @@
 package com.test.rest.test;
 
+import com.test.model.DataPoint;
+import com.test.model.DataPointType;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,16 @@ public class RestWeatherQueryControllerTest extends BaseControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/query/ping"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.datasize").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.datasize").value(0))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.iata_freq", Matchers.aMapWithSize(5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.radius_freq", Matchers.hasSize(1001)));
+
+        update(new DataPoint(1.0,2.0,3.0,4.0, 1, DataPointType.WIND));
+
+        mvc.perform(MockMvcRequestBuilders.get("/query/ping"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.datasize").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.iata_freq", Matchers.aMapWithSize(5)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.radius_freq", Matchers.hasSize(1001)));
     }

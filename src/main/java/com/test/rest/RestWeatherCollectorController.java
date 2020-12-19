@@ -50,7 +50,7 @@ public class RestWeatherCollectorController {
 
     @GetMapping("/airport/{iata}")
     public Response getAirport(@PathVariable String iata) {
-        return queryService.findAirportData(iata)
+        return queryService.findAirport(iata)
                 .map(airportData -> Response.ok(airportData).build())
                 .orElseGet(() -> Response.status(404).build());
     }
@@ -64,14 +64,8 @@ public class RestWeatherCollectorController {
 
     @DeleteMapping("/airport/{iata}")
     public Response deleteAirport(@PathVariable String iata) {
-        return queryService.deleteAirportData(iata)
+        return queryService.deleteAirport(iata)
                 .map(airportData -> Response.ok().build())
                 .orElseGet(() -> Response.status(404).build());
-    }
-
-    @GetMapping("/exit")
-    public Response exit() {
-        System.exit(0);
-        return Response.noContent().build();
     }
 }

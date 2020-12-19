@@ -13,11 +13,11 @@ public interface QueryService {
      * @param iataCode as a string
      * @return airport data or Empty if not found
      */
-    Optional<AirportData> findAirportData(String iataCode);
+    Optional<AirportData> findAirport(String iataCode);
 
     AirportData addAirport(String iata, int latitude, int longitude);
 
-    Optional<Boolean> deleteAirportData(String iata);
+    Optional<Boolean> deleteAirport(String iata);
 
     List<AtmosphericInformation> queryWeather(String iata, double radius);
 

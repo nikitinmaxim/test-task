@@ -7,8 +7,8 @@ import com.test.exception.WeatherException;
 import java.util.Set;
 
 public interface CollectorService {
+
     void addDataPoint(String iataCode, DataPointType pointType, DataPoint dp) throws WeatherException;
 
     Set<String> getAirports();
-
 }

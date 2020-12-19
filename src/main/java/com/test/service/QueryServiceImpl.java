@@ -24,7 +24,7 @@ public class QueryServiceImpl implements QueryService {
      * @return airport data or Empty if not found
      */
     @Override
-    public Optional<AirportData> findAirportData(String iataCode) {
+    public Optional<AirportData> findAirport(String iataCode) {
         return dataContainer.findAirportData(iataCode);
     }
 
@@ -34,16 +34,17 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public Optional<Boolean> deleteAirportData(String iata) {
+    public Optional<Boolean> deleteAirport(String iata) {
         return dataContainer.deleteAirportData(iata)
                 .map(data -> true);
     }
 
     @Override
     public List<AtmosphericInformation> queryWeather(String iata, double radius) {
-        return findAirportData(iata)
+        return findAirport(iata)
                 .map(airportData -> {
-                    updateRequestFrequency(airportData, radius);
+                    updateRequestFrequency(airportData);
+                    updateRequestFrequency(radius);
                     return (radius == 0)
                             ? Collections.singletonList(airportData.getAtmosphericInformation())
                             : dataContainer.getAirportData().stream()
@@ -55,22 +56,21 @@ public class QueryServiceImpl implements QueryService {
     }
     @Override
     public Map<String, Object> queryPingResponse() {
-
         Map<String, Object> retval = new HashMap<>();
 
         long datasize = dataContainer.getAirportData().stream()
-                .map(airportData -> airportData.getAtmosphericInformation())
-                .filter(atmosphericInformation -> atmosphericInformation.isFresh())
-                .count();
+                                        .map(airportData -> airportData.getAtmosphericInformation())
+                                        .filter(atmosphericInformation -> atmosphericInformation.isFresh())
+                                        .count();
         retval.put("datasize", datasize);
 
         Map<String, Double> iata_freq = dataContainer.getAirportData().stream()
-                .map(airportData -> {
-                    Map<AirportData, Integer> qm = dataContainer.getRequestFrequency();
-                    double fr = (double) qm.getOrDefault(airportData, 0) / qm.size();
-                    return Pair.of(airportData.getIata(), fr);
-                })
-                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+                                                .map(airportData -> {
+                                                    Map<AirportData, Integer> qm = dataContainer.getRequestFrequency();
+                                                    double fr = (double) qm.getOrDefault(airportData, 0) / qm.size();
+                                                    return Pair.of(airportData.getIata(), fr);
+                                                })
+                                                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
         retval.put("iata_freq", iata_freq);
 
         OptionalDouble best = dataContainer.getRadiusFreq().keySet().stream()
@@ -93,10 +93,17 @@ public class QueryServiceImpl implements QueryService {
      * Records information about how often requests are made
      *
      * @param data   an airport data
+     */
+    private void updateRequestFrequency(AirportData data) {
+        dataContainer.updateRequestFrequency(data);
+    }
+    /**
+     * Records information about how often requests are made
+     *
      * @param radius query radius
      */
-    private void updateRequestFrequency(AirportData data, Double radius) {
-        dataContainer.updateRequestFrequency(data);
+    private void updateRequestFrequency(Double radius) {
         dataContainer.updateRequestFrequency(radius);
     }
+
 }

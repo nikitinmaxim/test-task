@@ -20,11 +20,15 @@ public class WeatherClient {
 
     private static final String BASE_URI = "http://localhost:8080";
 
-    /** end point for read queries */
-    private WebTarget query;
+    /**
+     * end point for read queries
+     */
+    private final WebTarget query;
 
-    /** end point to supply updates */
-    private WebTarget collect;
+    /**
+     * end point to supply updates
+     */
+    private final WebTarget collect;
 
     public WeatherClient() {
         Client client = ClientBuilder.newClient();
@@ -54,6 +58,11 @@ public class WeatherClient {
         WebTarget path = collect.path("/weather/BOS/" + pointType);
         DataPoint dp = new DataPoint(first, last, mean, median, count, DataPointType.valueOf(pointType));
         path.request().post(Entity.entity(dp, "application/json"));
+    }
+
+    public boolean addAirPort(String code, int latitude, int longitude) {
+        WebTarget path = collect.path("/airport/"+ code + "/" + latitude + "/" + longitude);
+        return path.request().post(null).getStatus() == 200;
     }
 
     public void exit() {

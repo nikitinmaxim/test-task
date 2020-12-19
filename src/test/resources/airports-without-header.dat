@@ -1,0 +1,2 @@
+#City;Country;IATA/FAA;ICAO;Latitude;Longitude;Altitude;Timezone;DST
+city name; country name; BOS; BOS4; 10; -10; 0; 5.5; E

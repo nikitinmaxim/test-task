@@ -15,6 +15,10 @@ public interface QueryService {
      */
     Optional<AirportData> findAirportData(String iataCode);
 
+    AirportData addAirport(String iata, int latitude, int longitude);
+
+    Optional<Boolean> deleteAirportData(String iata);
+
     List<AtmosphericInformation> queryWeather(String iata, double radius);
 
     Map<String, Object> queryPingResponse();

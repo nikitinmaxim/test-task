@@ -5,13 +5,7 @@ import com.test.model.DataPoint;
 import com.test.model.DataPointType;
 import com.test.service.QueryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.test.exception.WeatherException;
 import com.test.service.CollectorService;
 
@@ -49,7 +43,6 @@ public class RestWeatherCollectorController {
         }
     }
 
-
     @GetMapping("/airports")
     public Response getAirports() {
         return Response.ok(collectorService.getAirports()).build();
@@ -59,6 +52,20 @@ public class RestWeatherCollectorController {
     public Response getAirport(@PathVariable String iata) {
         return queryService.findAirportData(iata)
                 .map(airportData -> Response.ok(airportData).build())
+                .orElseGet(() -> Response.status(404).build());
+    }
+
+    @PostMapping("/airport/{iata}/{latitude}/{longitude}")
+    public Response createAirport(@PathVariable String iata, @PathVariable String latitude, @PathVariable String longitude) {
+        int alatitude = Integer.parseInt(latitude);
+        int alongitude = Integer.parseInt(longitude);
+        return Response.ok(queryService.addAirport(iata, alatitude, alongitude)).build();
+    }
+
+    @DeleteMapping("/airport/{iata}")
+    public Response deleteAirport(@PathVariable String iata) {
+        return queryService.deleteAirportData(iata)
+                .map(airportData -> Response.ok().build())
                 .orElseGet(() -> Response.status(404).build());
     }
 

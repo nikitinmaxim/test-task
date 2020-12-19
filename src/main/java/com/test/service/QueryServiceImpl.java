@@ -27,6 +27,18 @@ public class QueryServiceImpl implements QueryService {
     public Optional<AirportData> findAirportData(String iataCode) {
         return dataContainer.findAirportData(iataCode);
     }
+
+    @Override
+    public AirportData addAirport(String iata, int latitude, int longitude) {
+        return dataContainer.addAirport(iata, latitude, longitude);
+    }
+
+    @Override
+    public Optional<Boolean> deleteAirportData(String iata) {
+        return dataContainer.deleteAirportData(iata)
+                .map(data -> true);
+    }
+
     @Override
     public List<AtmosphericInformation> queryWeather(String iata, double radius) {
         return findAirportData(iata)
@@ -87,5 +99,4 @@ public class QueryServiceImpl implements QueryService {
         dataContainer.updateRequestFrequency(data);
         dataContainer.updateRequestFrequency(radius);
     }
-
 }

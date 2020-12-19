@@ -84,4 +84,12 @@ public class DataContainer {
     public Map<Double, Integer> getRadiusFreq() {
         return Collections.unmodifiableMap(radiusFreq);
     }
+
+    public Optional<AirportData> deleteAirportData(String iata) {
+        return findAirportData(iata)
+                .map(data -> {
+                    airportData.remove(data);
+                    return data;
+                });
+    }
 }

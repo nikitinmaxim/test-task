@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class QueryService {
 
     private final CalculationService calculationService;
+    private final DataContainer dataContainer;
 
     /**
      * Given an iataCode find the airport data
@@ -22,7 +23,7 @@ public class QueryService {
      * @return airport data or null if not found
      */
     public Optional<AirportData> findAirportData(String iataCode) {
-        return DataContainer.getAirportData().stream()
+        return dataContainer.getAirportData().stream()
                 .filter(ap -> ap.getIata().equals(iataCode))
                 .findFirst();
     }
@@ -33,7 +34,7 @@ public class QueryService {
                     updateRequestFrequency(airportData, radius);
                     return (radius == 0)
                             ? Collections.singletonList(airportData.getAtmosphericInformation())
-                            : DataContainer.getAirportData().stream()
+                            : dataContainer.getAirportData().stream()
                                             .filter(data -> calculationService.calculateDistance(airportData, data) <= radius)
                                             .map(data -> data.getAtmosphericInformation())
                                             .collect(Collectors.toList());
@@ -44,7 +45,7 @@ public class QueryService {
     public Map<String, Object> queryPingResponse() {
         Map<String, Object> retval = new HashMap<>();
         long datasize = 0L;
-        for (AirportData a : DataContainer.getAirportData()) {
+        for (AirportData a : dataContainer.getAirportData()) {
             AtmosphericInformation info = a.getAtmosphericInformation();
             if (info.isFresh()) {
                 datasize++;
@@ -54,8 +55,8 @@ public class QueryService {
 
         Map<String, Double> f = new HashMap<>();
         // fraction of queries
-        for (AirportData data : DataContainer.getAirportData()) {
-            Map<AirportData, Integer> qm = DataContainer.getRequestFrequency();
+        for (AirportData data : dataContainer.getAirportData()) {
+            Map<AirportData, Integer> qm = dataContainer.getRequestFrequency();
             double fr = (double) qm.getOrDefault(data, 0) / qm.size();
             f.put(data.getIata(), fr);
         }
@@ -63,7 +64,7 @@ public class QueryService {
 
         boolean seen = false;
         Double best = null;
-        for (Double aDouble : DataContainer.getRadiusFreq().keySet()) {
+        for (Double aDouble : dataContainer.getRadiusFreq().keySet()) {
             if (!seen || Double.compare(aDouble, best) > 0) {
                 seen = true;
                 best = aDouble;
@@ -72,7 +73,7 @@ public class QueryService {
         int m = Integer.valueOf(seen ? best.intValue() : 1000) + 1;
 
         int[] h = new int[m];
-        for (Map.Entry<Double, Integer> e : DataContainer.getRadiusFreq().entrySet()) {
+        for (Map.Entry<Double, Integer> e : dataContainer.getRadiusFreq().entrySet()) {
             int i = e.getKey().intValue() % 10;
             h[i] += e.getValue();
         }
@@ -98,7 +99,7 @@ public class QueryService {
      * @param radius query radius
      */
     private void updateRequestFrequency(AirportData data, Double radius) {
-        DataContainer.UpdateReqeustFreqeuncy(data, radius);
+        dataContainer.UpdateRequestFrequency(data, radius);
     }
 
 }

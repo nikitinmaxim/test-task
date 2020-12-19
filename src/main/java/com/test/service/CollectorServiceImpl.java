@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class CollectorServiceImpl implements CollectorService {
 
     private final QueryService queryService;
+    private final DataContainer dataContainer;
 
     /**
      * Update the airports weather data with the collected data.
@@ -34,7 +35,7 @@ public class CollectorServiceImpl implements CollectorService {
 
     @Override
     public Set<String> getAirports() {
-        return DataContainer.getAirportData().stream().map(a -> a.getIata()).collect(Collectors.toSet());
+        return dataContainer.getAirportData().stream().map(a -> a.getIata()).collect(Collectors.toSet());
     }
 
 }

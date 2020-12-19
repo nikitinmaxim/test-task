@@ -2,7 +2,11 @@ package com.test.data;
 
 import com.test.model.AirportData;
 import com.test.model.AtmosphericInformation;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,9 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class DataContainer {
-    /** all known airports */
-    private final static List<AirportData> airportData = Collections.synchronizedList(new ArrayList<>());
+    /**
+     * all known airports
+     */
+    private final List<AirportData> airportData = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * Internal performance counter to better understand most requested information, this map can be improved but
@@ -20,18 +28,16 @@ public class DataContainer {
      * we don't want to write this to disk, but will pull it off using a REST request and aggregate with other
      * performance metrics
      */
-    private final static Map<AirportData, Integer> requestFrequency = new TreeMap<>();
+    private final Map<AirportData, Integer> requestFrequency = Collections.synchronizedMap(new TreeMap<>());
 
-    private final static Map<Double, Integer> radiusFreq = new HashMap<>();
+    private final Map<Double, Integer> radiusFreq = Collections.synchronizedMap(new HashMap<>());
 
-    static {
-        init();
-    }
 
     /**
      * A dummy init method that loads hard coded data
      */
-    protected static void init() {
+    @PostConstruct
+    protected void init() {
         airportData.clear();
         requestFrequency.clear();
 
@@ -42,30 +48,30 @@ public class DataContainer {
         addAirport("MMU", 40, -76);
     }
 
-    public static void reset(){
+    public void reset(){
         init();
     }
 
-    public static AirportData addAirport(String iataCode, int latitude, int longitude) {
+    public AirportData addAirport(String iataCode, int latitude, int longitude) {
         AirportData ad = new AirportData(iataCode, latitude, longitude, new AtmosphericInformation());
         airportData.add(ad);
         return ad;
     }
 
-    public static void UpdateReqeustFreqeuncy(AirportData airportData, Double radius) {
+    public void UpdateRequestFrequency(AirportData airportData, Double radius) {
         requestFrequency.put(airportData, requestFrequency.getOrDefault(airportData, 0) + 1);
-        radiusFreq.put(radius, radiusFreq.getOrDefault(radius, 0));
+        radiusFreq.put(radius, radiusFreq.getOrDefault(radius, 0) + 1);
     }
 
-    public static List<AirportData> getAirportData() {
+    public List<AirportData> getAirportData() {
         return Collections.unmodifiableList(airportData);
     }
 
-    public static Map<AirportData, Integer> getRequestFrequency() {
+    public Map<AirportData, Integer> getRequestFrequency() {
         return Collections.unmodifiableMap(requestFrequency);
     }
 
-    public static Map<Double, Integer> getRadiusFreq() {
+    public Map<Double, Integer> getRadiusFreq() {
         return Collections.unmodifiableMap(radiusFreq);
     }
 }

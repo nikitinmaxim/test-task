@@ -51,17 +51,16 @@ public class RestWeatherQueryController {
      * return a list of matching atmosphere information.
      *
      * @param iata the iataCode
-     * @param radiusString the radius in km
+     * @param radius the radius in km
      *
      * @return a list of atmospheric information
      */
     @GetMapping("/weather/{iata}/{radius}")
-    public Response weather(@PathVariable String iata, @PathVariable(name = "radius") String radiusString) {
-        double radius = radiusString == null || radiusString.trim().isEmpty() ? 0 : Double.valueOf(radiusString);
-        if (queryService.findAirportData(iata) == null) {
-            return Response.status(404).build();
-        }
-        List<AtmosphericInformation> informationList = queryService.queryWeather(iata, radius);
-        return Response.ok(informationList).build();
+    public Response weather(@PathVariable String iata, @PathVariable String radius) {
+        double aradius = radius == null || radius.trim().isEmpty() ? 0 : Double.parseDouble(radius);
+
+        return queryService.findAirportData(iata)
+                .map(data -> Response.ok(queryService.queryWeather(iata, aradius)).build())
+                .orElseGet(() -> Response.status(404).build());
     }
 }

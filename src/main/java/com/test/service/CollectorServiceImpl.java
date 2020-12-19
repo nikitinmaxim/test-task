@@ -28,15 +28,13 @@ public class CollectorServiceImpl implements CollectorService {
      */
     @Override
     public void addDataPoint(String iataCode, DataPointType pointType, DataPoint dp) throws WeatherException {
-        AirportData airportData = queryService.findAirportData(iataCode);
-        if (airportData != null) {
-            airportData.atmosphericInformation.updateContents(pointType, dp);
-        }
+        queryService.findAirportData(iataCode)
+                .ifPresent(airportData -> airportData.getAtmosphericInformation().updateContents(pointType, dp));
     }
 
     @Override
     public Set<String> getAirports() {
-        return DataContainer.getAirportData().stream().map(a -> a.iata).collect(Collectors.toSet());
+        return DataContainer.getAirportData().stream().map(a -> a.getIata()).collect(Collectors.toSet());
     }
 
 }

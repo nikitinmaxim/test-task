@@ -60,11 +60,9 @@ public class RestWeatherCollectorController {
 
     @GetMapping("/airport/{iata}")
     public Response getAirport(@PathVariable String iata) {
-        AirportData airportData = queryService.findAirportData(iata);
-        if (airportData == null){
-                    return Response.status(404).build();
-        }
-        return Response.ok(airportData).build();
+        return queryService.findAirportData(iata)
+                .map(airportData -> Response.ok(airportData).build())
+                .orElseGet(() -> Response.status(404).build());
     }
 
     @GetMapping("/exit")

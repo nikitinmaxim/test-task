@@ -1,29 +1,27 @@
 package com.test.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /**
  * Basic airport information.
  *
  * @author code test administrator
  */
+@Data
+@AllArgsConstructor
 public class AirportData implements Comparable<AirportData> {
 
     /** the three letter IATA code */
-    public String iata;
+    private String iata;
 
     /** latitude value in degrees */
-    public int latitude;
+    private int latitude;
 
     /** longitude value in degrees */
-    public int longitude;
+    private int longitude;
 
-    public AtmosphericInformation atmosphericInformation;
-
-    public AirportData(String iata, int latitude, int longitude, AtmosphericInformation atmosphericInformation) {
-        this.iata = iata;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.atmosphericInformation = atmosphericInformation;
-    }
+    private AtmosphericInformation atmosphericInformation;
 
     @Override
     public int compareTo(AirportData airportData) {

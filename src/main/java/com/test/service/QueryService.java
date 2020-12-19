@@ -20,12 +20,10 @@ public class QueryService {
      * Given an iataCode find the airport data
      *
      * @param iataCode as a string
-     * @return airport data or null if not found
+     * @return airport data or Empty if not found
      */
     public Optional<AirportData> findAirportData(String iataCode) {
-        return dataContainer.getAirportData().stream()
-                .filter(ap -> ap.getIata().equals(iataCode))
-                .findFirst();
+        return dataContainer.findAirportData(iataCode);
     }
 
     public List<AtmosphericInformation> queryWeather(String iata, double radius) {
@@ -99,7 +97,8 @@ public class QueryService {
      * @param radius query radius
      */
     private void updateRequestFrequency(AirportData data, Double radius) {
-        dataContainer.UpdateRequestFrequency(data, radius);
+        dataContainer.updateRequestFrequency(data);
+        dataContainer.updateRequestFrequency(radius);
     }
 
 }

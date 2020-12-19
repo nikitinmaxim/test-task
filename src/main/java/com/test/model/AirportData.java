@@ -12,13 +12,19 @@ import lombok.Data;
 @AllArgsConstructor
 public class AirportData implements Comparable<AirportData> {
 
-    /** the three letter IATA code */
+    /**
+     * the three letter IATA code
+     */
     private String iata;
 
-    /** latitude value in degrees */
+    /**
+     * latitude value in degrees
+     */
     private int latitude;
 
-    /** longitude value in degrees */
+    /**
+     * longitude value in degrees
+     */
     private int longitude;
 
     private AtmosphericInformation atmosphericInformation;

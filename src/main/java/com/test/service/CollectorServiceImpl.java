@@ -5,15 +5,17 @@ import com.test.model.DataPoint;
 import com.test.model.DataPointType;
 import com.test.data.DataContainer;
 import com.test.exception.WeatherException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
+@RequiredArgsConstructor
 public class CollectorServiceImpl implements CollectorService {
 
-    @Inject
-    private QueryService queryService;
+    private final QueryService queryService;
 
     /**
      * Update the airports weather data with the collected data.

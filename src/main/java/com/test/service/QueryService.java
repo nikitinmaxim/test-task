@@ -3,18 +3,20 @@ package com.test.service;
 import com.test.model.AirportData;
 import com.test.model.AtmosphericInformation;
 import com.test.data.DataContainer;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
+@RequiredArgsConstructor
 public class QueryService {
 
-    @Inject
-    private CalculationService calculationService;
+    private final CalculationService calculationService;
 
     /**
      * Given an iataCode find the airport data
@@ -24,7 +26,7 @@ public class QueryService {
      */
     public AirportData findAirportData(String iataCode) {
         return DataContainer.getAirportData().stream()
-                .filter(ap -> ap.iata == iataCode)
+                .filter(ap -> ap.iata.equals(iataCode))
                 .findFirst().orElse(null);
     }
 

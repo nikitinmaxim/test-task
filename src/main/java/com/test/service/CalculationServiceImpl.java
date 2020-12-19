@@ -1,7 +1,9 @@
 package com.test.service;
 
 import com.test.model.AirportData;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CalculationServiceImpl implements CalculationService {
     private static final double EARTH_RADIUS = 6372.8;
 

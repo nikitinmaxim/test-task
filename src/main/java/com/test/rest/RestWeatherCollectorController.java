@@ -3,6 +3,7 @@ package com.test.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.model.DataPoint;
 import com.test.model.DataPointType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,6 @@ import com.test.model.AirportData;
 import com.test.service.CollectorService;
 import com.test.service.QueryService;
 
-import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
 /**
@@ -26,14 +26,12 @@ import javax.ws.rs.core.Response;
  */
 @RestController
 @RequestMapping("/collect")
+@RequiredArgsConstructor
 public class RestWeatherCollectorController {
 
-    @Inject
-    private CollectorService collectorService;
-    @Inject
-    private QueryService queryService;
-    @Inject
-    private ObjectMapper objectMapper;
+    private final CollectorService collectorService;
+    private final QueryService queryService;
+    private final ObjectMapper objectMapper;
 
     @RequestMapping(value = "/ping", method = RequestMethod.GET)
     public Response ping() {
@@ -41,7 +39,7 @@ public class RestWeatherCollectorController {
     }
 
     @PostMapping("/weather/{iata}/{pointType}")
-    public Response updateWeather(@PathVariable String iataCode, @PathVariable String pointType, @RequestBody String datapointJson) {
+    public Response updateWeather(@PathVariable(name = "iata") String iataCode, @PathVariable String pointType, @RequestBody String datapointJson) {
         try {
             collectorService.addDataPoint(iataCode, DataPointType.valueOf(pointType.toUpperCase()), objectMapper.readValue(datapointJson, DataPoint.class));
             return Response.ok().build();

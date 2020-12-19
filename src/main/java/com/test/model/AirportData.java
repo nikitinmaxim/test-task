@@ -5,7 +5,7 @@ package com.test.model;
  *
  * @author code test administrator
  */
-public class AirportData {
+public class AirportData implements Comparable<AirportData> {
 
     /** the three letter IATA code */
     public String iata;
@@ -23,5 +23,10 @@ public class AirportData {
         this.latitude = latitude;
         this.longitude = longitude;
         this.atmosphericInformation = atmosphericInformation;
+    }
+
+    @Override
+    public int compareTo(AirportData airportData) {
+        return iata.compareTo(airportData.iata);
     }
 }

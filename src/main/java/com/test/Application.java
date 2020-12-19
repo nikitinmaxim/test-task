@@ -15,7 +15,7 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
+/*
     @Bean
     CalculationService calculationService() {
         return new CalculationServiceImpl();
@@ -30,4 +30,5 @@ public class Application {
     QueryService queryService() {
         return new QueryService();
     }
+ */
 }

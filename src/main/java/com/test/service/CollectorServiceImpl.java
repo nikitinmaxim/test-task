@@ -1,6 +1,5 @@
 package com.test.service;
 
-import com.test.model.AirportData;
 import com.test.model.DataPoint;
 import com.test.model.DataPointType;
 import com.test.data.DataContainer;

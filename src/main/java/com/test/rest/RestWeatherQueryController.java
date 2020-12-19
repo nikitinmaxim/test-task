@@ -1,8 +1,5 @@
 package com.test.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.model.AtmosphericInformation;
 import com.test.service.QueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +22,6 @@ import java.util.Map;
 public class RestWeatherQueryController {
 
     private final QueryService queryService;
-    private final ObjectMapper objectMapper;
 
     /**
      * Retrieve service health including total size of valid data points and request frequency information.
@@ -36,14 +31,6 @@ public class RestWeatherQueryController {
     @GetMapping("/ping")
     public Map<String, Object> ping() {
         return queryService.queryPingResponse();
-        /*Map<String, Object> pingResponse = queryService.queryPingResponse();
-        try {
-            return objectMapper.writeValueAsString(pingResponse);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-         */
     }
 
     /**

@@ -3,6 +3,7 @@ package com.test.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.model.DataPoint;
 import com.test.model.DataPointType;
+import com.test.service.QueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.test.exception.WeatherException;
-import com.test.model.AirportData;
 import com.test.service.CollectorService;
-import com.test.service.QueryService;
 
 import javax.ws.rs.core.Response;
 
@@ -52,11 +51,9 @@ public class RestWeatherCollectorController {
 
 
     @GetMapping("/airports")
-    public Response getAirports()
-    {
+    public Response getAirports() {
         return Response.ok(collectorService.getAirports()).build();
     }
-
 
     @GetMapping("/airport/{iata}")
     public Response getAirport(@PathVariable String iata) {

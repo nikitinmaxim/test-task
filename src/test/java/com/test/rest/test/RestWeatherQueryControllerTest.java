@@ -1,5 +1,6 @@
 package com.test.rest.test;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,7 +21,9 @@ public class RestWeatherQueryControllerTest extends BaseControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/query/ping"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.datasize").value(5));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.datasize").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.iata_freq", Matchers.aMapWithSize(5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.radius_freq", Matchers.hasSize(1001)));
     }
 
 

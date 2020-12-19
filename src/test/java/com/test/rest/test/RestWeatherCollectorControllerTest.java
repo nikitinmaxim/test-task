@@ -1,9 +1,11 @@
 package com.test.rest.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.data.DataContainer;
 import com.test.model.DataPoint;
 import com.test.model.DataPointType;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -20,7 +22,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RestWeatherCollectorControllerTest extends BaseControllerTest {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private DataContainer dataContainer;
+
+    @BeforeEach
+    void cleanUp() {
+        dataContainer.cleanUp();
+    }
 
     @Test
     void testPing() throws Exception {

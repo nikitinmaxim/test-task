@@ -43,6 +43,10 @@ public class DataContainer {
         addAirport("MMU", 40, -76);
     }
 
+    public void cleanUp() {
+        init();
+    }
+
     /**
      * Add airport to the container
      * @param iataCode an IATA code of the airport

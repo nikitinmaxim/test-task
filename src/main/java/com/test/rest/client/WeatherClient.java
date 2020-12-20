@@ -1,7 +1,7 @@
-package com.test;
+package com.test.rest.client;
 
-import com.test.model.DataPoint;
-import com.test.model.DataPointType;
+import com.test.rest.dto.PointDataDto;
+import com.test.rest.dto.PointDataTypeDto;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -56,7 +56,7 @@ public class WeatherClient {
 
     public void populate(String pointType, int first, int last, int mean, int median, int count) {
         WebTarget path = collect.path("/weather/BOS/" + pointType);
-        DataPoint dp = new DataPoint(first, last, mean, median, count, DataPointType.valueOf(pointType));
+        PointDataDto dp = new PointDataDto(first, last, mean, median, count, PointDataTypeDto.valueOf(pointType));
         path.request().post(Entity.entity(dp, "application/json"));
     }
 

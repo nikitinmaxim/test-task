@@ -1,14 +1,12 @@
-package com.test.model;
+package com.test.loader.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 @Getter
 @RequiredArgsConstructor(staticName = "of")
-@Valid
 public class ExternalAirportData {
     /**
      * Main city served by airport. May be spelled differently from name.

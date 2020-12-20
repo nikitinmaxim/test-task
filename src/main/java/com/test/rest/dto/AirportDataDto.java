@@ -1,4 +1,4 @@
-package com.test.model;
+package com.test.rest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AirportData implements Comparable<AirportData> {
+public class AirportDataDto implements Comparable<AirportDataDto> {
 
     /**
      * the three letter IATA code
@@ -29,10 +29,10 @@ public class AirportData implements Comparable<AirportData> {
      */
     private int longitude;
 
-    private AtmosphericInformation atmosphericInformation;
+    private AtmosphericInformationDto atmosphericInformation;
 
     @Override
-    public int compareTo(AirportData airportData) {
+    public int compareTo(AirportDataDto airportData) {
         return iata.compareTo(airportData.iata);
     }
 }

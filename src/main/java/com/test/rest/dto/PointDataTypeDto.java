@@ -1,11 +1,11 @@
-package com.test.model;
+package com.test.rest.dto;
 
 /**
  * The various types of data points we can collect.
  *
  * @author code test administrator
  */
-public enum DataPointType {
+public enum PointDataTypeDto {
     WIND,
     TEMPERATURE,
     HUMIDITY,

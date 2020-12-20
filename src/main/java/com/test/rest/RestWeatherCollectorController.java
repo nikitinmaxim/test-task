@@ -1,8 +1,8 @@
 package com.test.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.model.DataPoint;
-import com.test.model.DataPointType;
+import com.test.rest.dto.PointDataDto;
+import com.test.rest.mappers.AirportDataMapper;
+import com.test.rest.mappers.PointDataMapper;
 import com.test.service.QueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,9 @@ public class RestWeatherCollectorController {
 
     private final CollectorService collectorService;
     private final QueryService queryService;
-    private final ObjectMapper objectMapper;
+    private final PointDataMapper pointDataMapper;
+    private final AirportDataMapper airportDataMapper;
+
 
     @RequestMapping(value = "/ping", method = RequestMethod.GET)
     public Response ping() {
@@ -32,9 +34,9 @@ public class RestWeatherCollectorController {
     }
 
     @PostMapping("/weather/{iata}/{pointType}")
-    public Response updateWeather(@PathVariable(name = "iata") String iataCode, @PathVariable String pointType, @RequestBody String datapointJson) {
+    public Response updateWeather(@PathVariable(name = "iata") String iataCode, @PathVariable String pointType, @RequestBody PointDataDto dto) {
         try {
-            collectorService.addDataPoint(iataCode, DataPointType.valueOf(pointType.toUpperCase()), objectMapper.readValue(datapointJson, DataPoint.class));
+            collectorService.addDataPoint(iataCode, pointDataMapper.toEntity(pointType), pointDataMapper.toEntity(dto));
             return Response.ok().build();
         } catch (WeatherException e) {
             return Response.status(422).build();
@@ -51,7 +53,8 @@ public class RestWeatherCollectorController {
     @GetMapping("/airport/{iata}")
     public Response getAirport(@PathVariable String iata) {
         return queryService.findAirport(iata)
-                .map(airportData -> Response.ok(airportData).build())
+                .map(airportData -> airportDataMapper.toDto(airportData))
+                .map(dto -> Response.ok(dto).build())
                 .orElseGet(() -> Response.status(404).build());
     }
 

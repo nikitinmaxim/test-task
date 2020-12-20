@@ -1,7 +1,8 @@
-package com.test;
+package com.test.loader;
 
-import com.test.model.DST;
-import com.test.model.ExternalAirportData;
+import com.test.loader.dto.ExternalAirportData;
+import com.test.loader.dto.DST;
+import com.test.rest.client.WeatherClient;
 import com.test.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,10 +42,6 @@ public class DataLoader {
     private static final String ALTITUDE_DEFAULT = "0";
     private static final String TIMEZONE_DEFAULT = "0";
     private static final String DST_DEFAULT = "U";
-
-
-
-
 
     public static void main(String[] args) {
         WeatherClient wc = new WeatherClient();
@@ -128,7 +125,7 @@ public class DataLoader {
 
     private ExternalAirportData validate(Validator validator, ExternalAirportData data) {
         Set<ConstraintViolation<ExternalAirportData>> violations = validator.validate(data);
-        if(violations.size() > 0) {
+        if (violations.size() > 0) {
             violations.forEach(violation -> log.error(violation.getMessage()));
             return null;
         }

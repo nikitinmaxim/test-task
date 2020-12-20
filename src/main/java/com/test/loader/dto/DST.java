@@ -1,4 +1,4 @@
-package com.test.model;
+package com.test.loader.dto;
 
 public enum DST {
     E("Europe"),

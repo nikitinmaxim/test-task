@@ -2,7 +2,7 @@ package com.test.model;
 
 import com.test.exception.WeatherException;
 import com.test.util.Constants;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,10 +10,10 @@ import java.util.Map;
 /**
  * encapsulates sensor information for a particular location
  */
-@Getter
+@Data
 public class AtmosphericInformation {
 
-    private final Map<DataPointType, DataPoint> information = new HashMap<>();
+    private final Map<PointDataType, PointData> information = new HashMap<>();
 
     /**
      * the last time this data was updated, in milliseconds since UTC epoch
@@ -24,9 +24,12 @@ public class AtmosphericInformation {
 
     }
 
-    public void updateContents(DataPointType pointType, DataPoint dataPoint) throws WeatherException {
+    public void updateContents(PointDataType pointType, PointData pointData) throws WeatherException {
+        if(pointType != pointData.getType()) {
+            throw new WeatherException("Data error pointType not equal pointData type");
+        }
         lastUpdateTime = System.currentTimeMillis();
-        information.put(pointType, dataPoint);
+        information.put(pointType, pointData);
     }
 
     public boolean isFresh(){

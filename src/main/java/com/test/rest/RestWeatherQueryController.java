@@ -1,5 +1,6 @@
 package com.test.rest;
 
+import com.test.rest.mappers.AirportDataMapper;
 import com.test.service.QueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class RestWeatherQueryController {
 
     private final QueryService queryService;
+    private final AirportDataMapper airportDataMapper;
 
     /**
      * Retrieve service health including total size of valid data points and request frequency information.
@@ -47,7 +49,9 @@ public class RestWeatherQueryController {
         double aradius = radius == null || radius.trim().isEmpty() ? 0 : Double.parseDouble(radius);
 
         return queryService.findAirport(iata)
-                .map(data -> Response.ok(queryService.queryWeather(iata, aradius)).build())
+                .map(airportData -> queryService.queryWeather(iata, aradius))
+                .map(info -> airportDataMapper.toDto(info))
+                .map(dto -> Response.ok(dto).build())
                 .orElseGet(() -> Response.status(404).build());
     }
 }

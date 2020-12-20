@@ -52,6 +52,6 @@ public class RestWeatherQueryController {
                 .map(airportData -> queryService.queryWeather(iata, aradius))
                 .map(info -> airportDataMapper.toDto(info))
                 .map(dto -> Response.ok(dto).build())
-                .orElseGet(() -> Response.status(404).build());
+                .orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
     }
 }

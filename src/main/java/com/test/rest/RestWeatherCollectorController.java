@@ -5,6 +5,7 @@ import com.test.rest.mappers.AirportDataMapper;
 import com.test.rest.mappers.PointDataMapper;
 import com.test.service.QueryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import com.test.exception.WeatherException;
 import com.test.service.CollectorService;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response;
  *
  * @author code test administrator
  */
+@Slf4j
 @RestController
 @RequestMapping("/collect")
 @RequiredArgsConstructor
@@ -26,7 +28,6 @@ public class RestWeatherCollectorController {
     private final QueryService queryService;
     private final PointDataMapper pointDataMapper;
     private final AirportDataMapper airportDataMapper;
-
 
     @RequestMapping(value = "/ping", method = RequestMethod.GET)
     public Response ping() {
@@ -39,8 +40,10 @@ public class RestWeatherCollectorController {
             collectorService.addDataPoint(iataCode, pointDataMapper.toEntity(pointType), pointDataMapper.toEntity(dto));
             return Response.ok().build();
         } catch (WeatherException e) {
-            return Response.status(422).build();
+            log.error(e.getMessage(), e);
+            return Response.status(Response.Status.BAD_REQUEST).build();
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return Response.serverError().build();
         }
     }
@@ -55,20 +58,25 @@ public class RestWeatherCollectorController {
         return queryService.findAirport(iata)
                 .map(airportData -> airportDataMapper.toDto(airportData))
                 .map(dto -> Response.ok(dto).build())
-                .orElseGet(() -> Response.status(404).build());
+                .orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
     }
 
     @PostMapping("/airport/{iata}/{latitude}/{longitude}")
     public Response createAirport(@PathVariable String iata, @PathVariable String latitude, @PathVariable String longitude) {
-        int alatitude = Integer.parseInt(latitude);
-        int alongitude = Integer.parseInt(longitude);
-        return Response.ok(queryService.addAirport(iata, alatitude, alongitude)).build();
+        try {
+            int alatitude = Integer.parseInt(latitude);
+            int alongitude = Integer.parseInt(longitude);
+            return Response.ok(queryService.addAirport(iata, alatitude, alongitude)).build();
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(), ex);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @DeleteMapping("/airport/{iata}")
     public Response deleteAirport(@PathVariable String iata) {
         return queryService.deleteAirport(iata)
                 .map(airportData -> Response.ok().build())
-                .orElseGet(() -> Response.status(404).build());
+                .orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
     }
 }

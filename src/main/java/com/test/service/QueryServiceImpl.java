@@ -17,49 +17,22 @@ public class QueryServiceImpl implements QueryService {
     private final CalculationService calculationService;
     private final DataContainer dataContainer;
 
-    /**
-     * Given an iataCode find the airport data
-     *
-     * @param iataCode as a string
-     * @return airport data or Empty if not found
-     */
     @Override
     public Optional<AirportData> findAirport(String iataCode) {
         return dataContainer.findAirportData(iataCode);
     }
 
-    /**
-     *  Add airport data
-     *
-     * @param iataCode as a string
-     * @param latitude coordinate of airport
-     * @param longitude coordinate of airport
-     * @return created airport data or exists if found
-     */
     @Override
     public AirportData addAirport(String iataCode, int latitude, int longitude) {
         return dataContainer.addAirport(iataCode, latitude, longitude);
     }
 
-    /**
-     * Delete airport data
-     *
-     * @param iataCode as a string
-     * @return true if deleted or false if not found
-     */
     @Override
     public Optional<Boolean> deleteAirport(String iataCode) {
         return dataContainer.deleteAirportData(iataCode)
                 .map(data -> true);
     }
 
-    /**
-     * Query a atmospheric information
-     *
-     * @param iataCode as a string
-     * @param radius radius in km
-     * @return list of atmospheric information
-     */
     @Override
     public List<AtmosphericInformation> queryWeather(String iataCode, double radius) {
         return findAirport(iataCode)

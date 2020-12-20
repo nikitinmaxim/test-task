@@ -54,13 +54,13 @@ public class WeatherClient {
         System.out.println("query.ping: " + response.readEntity(String.class));
     }
 
-    public void populate(String pointType, int first, int last, int mean, int median, int count) {
+    public void addBOSInformation(String pointType, int first, int last, int mean, int median, int count) {
         WebTarget path = collect.path("/weather/BOS/" + pointType);
         PointDataDto dp = new PointDataDto(first, last, mean, median, count, PointDataTypeDto.valueOf(pointType));
         path.request().post(Entity.entity(dp, "application/json"));
     }
 
-    public boolean addAirPort(String code, int latitude, int longitude) {
+    public boolean addAirport(String code, int latitude, int longitude) {
         WebTarget path = collect.path("/airport/"+ code + "/" + latitude + "/" + longitude);
         return path.request().post(null).getStatus() == 200;
     }
@@ -76,7 +76,7 @@ public class WeatherClient {
     public static void main(String[] args) {
         WeatherClient wc = new WeatherClient();
         wc.pingCollect();
-        wc.populate("WIND", 0, 10, 6, 4, 20);
+        wc.addBOSInformation("WIND", 0, 10, 6, 4, 20);
 
         wc.query("BOS");
         wc.query("JFK");

@@ -17,19 +17,14 @@ public class CollectorServiceImpl implements CollectorService {
     private final QueryService queryService;
     private final DataContainer dataContainer;
 
-    /**
-     * Update the airports weather data with the collected data.
-     *
-     * @param iataCode the 3 letter IATA code
-     * @param pointType the point type {@link PointDataType}
-     * @param dp a datapoint object holding pointType data
-     *
-     * @throws WeatherException if the update can not be completed
-     */
     @Override
     public void addDataPoint(String iataCode, PointDataType pointType, PointData dp) throws WeatherException {
         queryService.findAirport(iataCode)
-                .ifPresent(airportData -> airportData.getAtmosphericInformation().updateContents(pointType, dp));
+                .map(airportData -> {
+                    airportData.getAtmosphericInformation().updateContents(pointType, dp);
+                    return true;
+                })
+                .orElseThrow(() -> new WeatherException("unknown IATA code: " + iataCode));
     }
 
     @Override

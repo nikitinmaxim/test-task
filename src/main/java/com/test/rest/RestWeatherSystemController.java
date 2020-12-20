@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.ws.rs.core.Response;
 
 /**
- * A REST implementation of the WeatherCollector API. Accessible only to airport weather collection
- * sites via secure VPN.
+ * The Weather App REST endpoint allows clients to control app.
  *
  * @author code test administrator
  */
@@ -16,9 +15,13 @@ import javax.ws.rs.core.Response;
 @RequiredArgsConstructor
 public class RestWeatherSystemController {
 
+    /**
+     * Exit Weather App
+     *
+     * @return status code
+     */
     @GetMapping("/exit")
     public Response exit() {
-        System.exit(0);
-        return Response.noContent().build();
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 }

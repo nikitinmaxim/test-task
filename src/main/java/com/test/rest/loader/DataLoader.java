@@ -46,7 +46,7 @@ public class DataLoader {
     public static void main(String[] args) {
         WeatherClient wc = new WeatherClient();
         DataLoader dataLoader  = new DataLoader();
-        Function<ExternalAirportData, Boolean> airportConsumer = (airport) -> wc.addAirPort(airport.getIata(), (int)Math.round(airport.getLatitude()), (int)Math.round(airport.getLongitude()));
+        Function<ExternalAirportData, Boolean> airportConsumer = (airport) -> wc.addAirport(airport.getIata(), (int)Math.round(airport.getLatitude()), (int)Math.round(airport.getLongitude()));
         long count = dataLoader.getFileNames(args)
                         .map(files -> files.stream()
                                             .mapToLong(dataFile -> dataLoader.loadDataFile(dataFile, airportConsumer))

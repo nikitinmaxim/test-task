@@ -13,8 +13,7 @@ import com.test.service.CollectorService;
 import javax.ws.rs.core.Response;
 
 /**
- * A REST implementation of the WeatherCollector API. Accessible only to airport weather collection
- * sites via secure VPN.
+ * The Weather App REST endpoint allows clients to collect airport information.
  *
  * @author code test administrator
  */
@@ -29,11 +28,24 @@ public class RestWeatherCollectorController {
     private final PointDataMapper pointDataMapper;
     private final AirportDataMapper airportDataMapper;
 
+    /**
+     *  Do nothing
+     *
+     * @return not empty string
+     */
     @RequestMapping(value = "/ping", method = RequestMethod.GET)
     public Response ping() {
         return Response.ok("ready").build();
     }
 
+    /**
+     *  Add weather information
+     *
+     * @param iataCode the 3 letter IATA code
+     * @param pointType an weather information type
+     * @param dto an weather information
+     * @return
+     */
     @PostMapping("/weather/{iata}/{pointType}")
     public Response updateWeather(@PathVariable(name = "iata") String iataCode, @PathVariable String pointType, @RequestBody PointDataDto dto) {
         try {
@@ -48,34 +60,59 @@ public class RestWeatherCollectorController {
         }
     }
 
+    /**
+     *  List known airport IATA code
+     *
+     * @return list of strings
+     */
     @GetMapping("/airports")
     public Response getAirports() {
         return Response.ok(collectorService.getAirports()).build();
     }
 
+    /**
+     *  Get airport information
+     *
+     * @param iataCode the 3 letter IATA code
+     * @return airport data
+     */
     @GetMapping("/airport/{iata}")
-    public Response getAirport(@PathVariable String iata) {
-        return queryService.findAirport(iata)
+    public Response getAirport(@PathVariable(name = "iata") String iataCode) {
+        return queryService.findAirport(iataCode)
                 .map(airportData -> airportDataMapper.toDto(airportData))
                 .map(dto -> Response.ok(dto).build())
                 .orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
     }
 
+    /**
+     *  Add new airport if not exist
+     *
+     * @param iataCode the 3 letter IATA code
+     * @param latitude coordinate
+     * @param longitude coordinate
+     * @return created airport data
+     */
     @PostMapping("/airport/{iata}/{latitude}/{longitude}")
-    public Response createAirport(@PathVariable String iata, @PathVariable String latitude, @PathVariable String longitude) {
+    public Response createAirport(@PathVariable(name = "iata") String iataCode, @PathVariable String latitude, @PathVariable String longitude) {
         try {
             int alatitude = Integer.parseInt(latitude);
             int alongitude = Integer.parseInt(longitude);
-            return Response.ok(queryService.addAirport(iata, alatitude, alongitude)).build();
+            return Response.ok(queryService.addAirport(iataCode, alatitude, alongitude)).build();
         } catch (RuntimeException ex) {
             log.error(ex.getMessage(), ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
+    /**
+     * Delete airport
+     *
+     * @param iataCode the 3 letter IATA code
+     * @return status code
+     */
     @DeleteMapping("/airport/{iata}")
-    public Response deleteAirport(@PathVariable String iata) {
-        return queryService.deleteAirport(iata)
+    public Response deleteAirport(@PathVariable(name = "iata") String iataCode) {
+        return queryService.deleteAirport(iataCode)
                 .map(airportData -> Response.ok().build())
                 .orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
     }

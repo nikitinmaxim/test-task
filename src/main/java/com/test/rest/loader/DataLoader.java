@@ -1,7 +1,7 @@
-package com.test.loader;
+package com.test.rest.loader;
 
-import com.test.loader.dto.ExternalAirportData;
-import com.test.loader.dto.DST;
+import com.test.rest.loader.dto.ExternalAirportData;
+import com.test.rest.loader.dto.DST;
 import com.test.rest.client.WeatherClient;
 import com.test.util.Pair;
 import lombok.extern.slf4j.Slf4j;

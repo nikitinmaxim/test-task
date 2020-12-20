@@ -1,7 +1,7 @@
 package com.test.test;
 
-import com.test.loader.DataLoader;
-import com.test.loader.dto.ExternalAirportData;
+import com.test.rest.loader.DataLoader;
+import com.test.rest.loader.dto.ExternalAirportData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

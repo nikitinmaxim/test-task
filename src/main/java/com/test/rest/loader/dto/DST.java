@@ -1,4 +1,4 @@
-package com.test.loader.dto;
+package com.test.rest.loader.dto;
 
 public enum DST {
     E("Europe"),
